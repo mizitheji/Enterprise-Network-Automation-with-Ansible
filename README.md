@@ -57,8 +57,14 @@ Network-Automation-With-Ansible
 │ └── compliance_report.yml # CSV compliance report
 ├── roles/
 │ ├── cisco_compliance/
+| | └── tasks/
+| |  └── main.yml
 │ ├── mikrotik_compliance/
+| | └── tasks/
+| |   └── main.yml
 │ └── cisco_ospf/
+|   └── tasks/
+|     └── main.yml
 ├── templates/
 │ ├── cisco_snmp.j2
 │ └── mikrotik_snmp.j2

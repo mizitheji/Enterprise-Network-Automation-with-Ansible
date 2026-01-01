@@ -44,9 +44,9 @@ The Ansible Control Node is hosted on **Proxmox at HQ**, reflecting real-world d
 Network-Automation-With-Ansible
 ├── inventory/
 │ ├── hosts.yml
-│ └── group_vars/
-│ ├── all/
-│ │ └── vault.yml # Encrypted credentials
+│ ├── group_vars/
+│ | └── all/
+│ │   └── vault.yml # Encrypted credentials
 │ ├── cisco.yml
 │ └── mikrotik.yml
 ├── playbooks/

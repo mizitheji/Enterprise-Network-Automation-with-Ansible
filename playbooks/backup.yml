@@ -1,1 +1,30 @@
+- name: Network Backup
+  hosts: all
+  gather_facts: no
 
+  tasks:
+    - name: Cisco | Show running-config
+      when: "'cisco' in group_names"
+      cisco.ios.ios_command:
+        commands:
+          - show running-config
+      register: cisco_run
+
+    - name: Cisco | Save running-config
+      when: "'cisco' in group_names"
+      copy:
+        content: "{{ cisco_run.stdout[0] }}"
+        dest: "backups/cisco/{{ inventory_hostname }}_running.cfg"
+
+    - name: MikroTik | Full export backup
+      when: "'mikrotik' in group_names"
+      community.network.routeros_command:
+        commands:
+          - /export verbose
+      register: mikrotik_backup
+
+    - name: MikroTik | Save backup
+      when: "'mikrotik' in group_names"
+      copy:
+        content: "{{ mikrotik_backup.stdout[0] }}"
+        dest: "backups/mikrotik/{{ inventory_hostname }}.rsc"

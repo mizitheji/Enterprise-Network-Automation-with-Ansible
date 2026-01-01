@@ -1,0 +1,10 @@
+- name: Cisco | Check SSH version
+  cisco.ios.ios_command:
+    commands:
+      - show run | section ip ssh
+  register: ssh_cfg
+
+- name: Cisco | Fail if SSH v2 not enabled
+  fail:
+    msg: "NON-COMPLIANT: SSH version 2 not configured"
+  when: "'ip ssh version 2' not in ssh_cfg.stdout[0]"

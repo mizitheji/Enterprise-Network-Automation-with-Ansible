@@ -1,0 +1,10 @@
+- name: MikroTik | Check SSH service
+  community.network.routeros_command:
+    commands:
+      - /ip service print where name=ssh
+  register: ssh_service
+
+- name: MikroTik | Fail if SSH disabled
+  fail:
+    msg: "NON-COMPLIANT: SSH service disabled"
+  when: "'disabled: true' in ssh_service.stdout[0]"

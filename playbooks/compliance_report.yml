@@ -1,1 +1,51 @@
+- name: Compliance Checks with Report
+  hosts: all
+  gather_facts: no
 
+  vars:
+    report_file: reports/compliance_report.csv
+
+  pre_tasks:
+    - name: Create report header
+      run_once: yes
+      delegate_to: localhost
+      copy:
+        dest: "{{ report_file }}"
+        content: "Device,Vendor,SSH,OSPF\n"
+
+  tasks:
+    - name: Cisco | Check SSH
+      when: "'cisco' in group_names"
+      cisco.ios.ios_command:
+        commands:
+          - show run | section ip ssh
+      register: cisco_ssh
+
+    - name: Cisco | Check OSPF
+      when: "'cisco' in group_names"
+      cisco.ios.ios_command:
+        commands:
+          - show ip ospf neighbor
+      register: cisco_ospf
+
+    - name: MikroTik | Check SSH
+      when: "'mikrotik' in group_names"
+      community.network.routeros_command:
+        commands:
+          - /ip service print where name=ssh
+      register: mt_ssh
+
+    - name: Append compliance result
+      delegate_to: localhost
+      lineinfile:
+        path: "{{ report_file }}"
+        line: >-
+          {{ inventory_hostname }},
+          {{ 'Cisco' if 'cisco' in group_names else 'MikroTik' }},
+          {{ 'COMPLIANT'
+             if (('cisco' in group_names and 'ip ssh version 2' in cisco_ssh.stdout[0])
+             or ('mikrotik' in group_names and 'disabled: false' in mt_ssh.stdout[0]))
+             else 'NON-COMPLIANT' }},
+          {{ 'COMPLIANT'
+             if ('cisco' in group_names and 'FULL' in cisco_ospf.stdout[0])
+             else 'N/A' }}

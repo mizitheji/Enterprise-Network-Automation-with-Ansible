@@ -1,1 +1,6 @@
+- name: OSPF Neighbor Validation
+  hosts: cisco
+  gather_facts: no
 
+  roles:
+    - cisco_ospf

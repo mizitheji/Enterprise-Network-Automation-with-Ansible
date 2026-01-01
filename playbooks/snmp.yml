@@ -1,1 +1,19 @@
+- name: Deploy SNMP Configuration
+  hosts: all
+  gather_facts: no
 
+  vars:
+    snmp_community: SECURE_SNMP
+    site: "{{ group_names[0] }}"
+
+  tasks:
+    - name: Cisco | Configure SNMP
+      when: "'cisco' in group_names"
+      cisco.ios.ios_config:
+        src: templates/cisco_snmp.j2
+
+    - name: MikroTik | Configure SNMP
+      when: "'mikrotik' in group_names"
+      community.network.routeros_command:
+        commands:
+          - "{{ lookup('template', 'templates/mikrotik_snmp.j2') }}"

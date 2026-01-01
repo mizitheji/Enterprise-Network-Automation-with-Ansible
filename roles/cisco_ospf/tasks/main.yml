@@ -1,0 +1,10 @@
+- name: Cisco | Check OSPF neighbors
+  cisco.ios.ios_command:
+    commands:
+      - show ip ospf neighbor
+  register: ospf_neighbors
+
+- name: Cisco | Fail if no FULL neighbors
+  fail:
+    msg: "NON-COMPLIANT: OSPF neighbors not in FULL state"
+  when: "'FULL' not in ospf_neighbors.stdout[0]"

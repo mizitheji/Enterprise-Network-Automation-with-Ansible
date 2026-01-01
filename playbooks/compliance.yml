@@ -1,1 +1,7 @@
+- name: SSH Compliance Check
+  hosts: all
+  gather_facts: no
 
+  roles:
+    - { role: cisco_compliance, when: "'cisco' in group_names" }
+    - { role: mikrotik_compliance, when: "'mikrotik' in group_names" }

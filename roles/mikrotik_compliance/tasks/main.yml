@@ -1,5 +1,5 @@
 - name: MikroTik | Check SSH service
-  community.network.routeros_command:
+  community.routeros.command:
     commands:
       - /ip service print where name=ssh
   register: ssh_service

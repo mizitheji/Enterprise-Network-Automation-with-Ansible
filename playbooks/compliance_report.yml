@@ -3,49 +3,69 @@
   gather_facts: no
 
   vars:
-    report_file: reports/compliance_report.csv
+    report_file: "{{ playbook_dir }}/../reports/compliance_report.csv"
 
   pre_tasks:
+    - name: Ensure reports directory exists
+      delegate_to: localhost
+      run_once: yes
+      file:
+        path: "{{ playbook_dir }}/../reports"
+        state: directory
+        mode: '0755'
+
     - name: Create report header
       run_once: yes
       delegate_to: localhost
       copy:
         dest: "{{ report_file }}"
         content: "Device,Vendor,SSH,OSPF\n"
+        force: yes
 
   tasks:
-    - name: Cisco | Check SSH
+    # --- CISCO CHECKS ---
+    - name: Cisco | Check SSH Status
       when: "'cisco' in group_names"
       cisco.ios.ios_command:
         commands:
-          - show run | section ip ssh
-      register: cisco_ssh
+          - show ip ssh
+      become: yes
+      become_method: enable
+      register: ssh_status
 
     - name: Cisco | Check OSPF
       when: "'cisco' in group_names"
       cisco.ios.ios_command:
         commands:
           - show ip ospf neighbor
+      become: yes
+      become_method: enable
       register: cisco_ospf
 
-    - name: MikroTik | Check SSH
+    # --- MIKROTIK CHECKS ---
+    - name: MikroTik | Check SSH service
       when: "'mikrotik' in group_names"
-      community.network.routeros_command:
+      community.routeros.command:
         commands:
           - /ip service print where name=ssh
-      register: mt_ssh
+      register: ssh_service
 
+    # --- APPEND DATA ---
     - name: Append compliance result
       delegate_to: localhost
+      throttle: 1
       lineinfile:
         path: "{{ report_file }}"
         line: >-
           {{ inventory_hostname }},
           {{ 'Cisco' if 'cisco' in group_names else 'MikroTik' }},
           {{ 'COMPLIANT'
-             if (('cisco' in group_names and 'ip ssh version 2' in cisco_ssh.stdout[0])
-             or ('mikrotik' in group_names and 'disabled: false' in mt_ssh.stdout[0]))
+             if (
+               ('cisco' in group_names and ssh_status.stdout is defined and ssh_status.stdout[0] | lower | regex_search('version 2\.0'))
+               or
+               ('mikrotik' in group_names and ssh_service.stdout is defined and 'disabled: false' in ssh_service.stdout[0])
+             )
              else 'NON-COMPLIANT' }},
           {{ 'COMPLIANT'
-             if ('cisco' in group_names and 'FULL' in cisco_ospf.stdout[0])
-             else 'N/A' }}
+             if ('cisco' in group_names and cisco_ospf.stdout is defined and 'FULL' in cisco_ospf.stdout[0])
+             else ('N/A' if 'mikrotik' in group_names else 'NON-COMPLIANT') }}

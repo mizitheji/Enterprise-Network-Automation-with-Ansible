@@ -9,11 +9,18 @@
   tasks:
     - name: Cisco | Configure SNMP
       when: "'cisco' in group_names"
+      connection: network_cli
+      become: yes
+      become_method: enable
       cisco.ios.ios_config:
-        src: templates/cisco_snmp.j2
+        lines:
+          - "snmp-server community {{ snmp_community }} RO"
+          - "snmp-server location {{ site }}"
+          - "snmp-server contact noc@company.local"
 
     - name: MikroTik | Configure SNMP
       when: "'mikrotik' in group_names"
-      community.network.routeros_command:
+      community.routeros.command:
         commands:
-          - "{{ lookup('template', 'templates/mikrotik_snmp.j2') }}"
+          - /snmp set enabled=yes contact="noc@company.local" location="{{ site }}"
+          - /snmp community set [find default=yes] name="{{ snmp_community }}"

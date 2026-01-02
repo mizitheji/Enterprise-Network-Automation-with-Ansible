@@ -84,11 +84,11 @@ The Ansible Control Node is hosted on **Proxmox at HQ**, reflecting real-world d
 Network-Automation-With-Ansible
 ├── inventory/
 │ ├── hosts.yml
-│ ├── group_vars/
-│ | └── all/
-│ │   └── vault.yml # Encrypted credentials
-│ ├── cisco.yml
-│ └── mikrotik.yml
+│ └── group_vars/
+│   ├── all/
+│   | └── vault.yml # Encrypted credentials
+│   ├── cisco.yml
+│   └── mikrotik.yml
 ├── playbooks/
 │ ├── backup.yml # Config backups
 │ ├── snmp.yml # SNMP deployment

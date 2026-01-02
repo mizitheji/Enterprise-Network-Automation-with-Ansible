@@ -2,6 +2,8 @@
   cisco.ios.ios_command:
     commands:
       - show ip ospf neighbor
+  become: yes
+  become_method: enable
   register: ospf_neighbors
 
 - name: Cisco | Fail if no FULL neighbors

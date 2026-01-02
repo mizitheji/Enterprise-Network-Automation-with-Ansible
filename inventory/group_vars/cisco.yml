@@ -1,0 +1,5 @@
+ansible_user: "{{ cisco_user }}"
+ansible_password: "{{ cisco_password }}"
+ansible_become_password: "{{ cisco_become_password }}"
+ansible_network_os: cisco.ios.ios
+ansible_connection: network_cli

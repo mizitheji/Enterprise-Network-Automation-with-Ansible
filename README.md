@@ -75,6 +75,7 @@ The Ansible Control Node is hosted on **Proxmox at HQ**, reflecting real-world d
 
 ## 🧠 Architecture Concept
 
+![diagrams](diagrams/diagrams.jpg)
 
 ---
 

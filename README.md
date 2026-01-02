@@ -129,8 +129,9 @@ sudo apt update && sudo apt upgrade -y
 sudo apt install python3-pip python3-venv -y
 sudo git clone https://github.com/mizitheji/Enterprise-Network-Automation-with-Ansible
 cd Enterprise-Network-Automation-with-Ansible
-python3 -m venv .venv
+sudo python3 -m venv .venv
 source .venv/bin/activate
+sudo chown -R ansible:ansible /home/ansible/Enterprise-Network-Automation-with-Ansible/
 pip install ansible
 ```
 

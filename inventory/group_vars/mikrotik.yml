@@ -1,2 +1,4 @@
+ansible_user: "{{ mikrotik_user }}"
+ansible_password: "{{ mikrotik_password }}"
 ansible_network_os: community.routeros.routeros
 ansible_connection: network_cli

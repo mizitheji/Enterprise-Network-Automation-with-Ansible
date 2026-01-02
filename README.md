@@ -106,9 +106,6 @@ Network-Automation-With-Ansible
 │ └── cisco_ospf/
 |   └── tasks/
 |     └── main.yml
-├── templates/
-│ ├── cisco_snmp.j2
-│ └── mikrotik_snmp.j2
 ├── backups/
 │ ├── cisco/
 │ └── mikrotik/

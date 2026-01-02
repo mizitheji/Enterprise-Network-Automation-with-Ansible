@@ -90,18 +90,19 @@ Network-Automation-With-Ansible
 │   ├── cisco.yml
 │   └── mikrotik.yml
 ├── playbooks/
-│ ├── backup.yml # Config backups
-│ ├── snmp.yml # SNMP deployment
-│ ├── compliance.yml # SSH compliance check
-│ ├── ospf_check.yml # OSPF neighbor validation
-│ └── compliance_report.yml # CSV compliance report
-├── roles/
+| ├── roles/
 │ ├── cisco_compliance/
 | | └── tasks/
 | |  └── main.yml
 │ ├── mikrotik_compliance/
 | | └── tasks/
 | |   └── main.yml
+│ ├── backup.yml # Config backups
+│ ├── snmp.yml # SNMP deployment
+│ ├── compliance.yml # SSH compliance check
+│ ├── ospf_check.yml # OSPF neighbor validation
+│ └── compliance_report.yml # CSV compliance report
+├── roles/
 │ └── cisco_ospf/
 |   └── tasks/
 |     └── main.yml
@@ -128,17 +129,30 @@ Network-Automation-With-Ansible
 - Ansible Core
 
 ```bash
-sudo apt update
-sudo apt install -y python3-pip sshpass
-pip3 install ansible
+sudo apt update && sudo apt upgrade -y
+sudo apt install python3-pip python3-venv -y
+sudo git clone https://github.com/mizitheji/Enterprise-Network-Automation-with-Ansible
+cd Enterprise-Network-Automation-with-Ansible
+python3 -m venv .venv
+source .venv/bin/activate
+pip install ansible
+```
+
+### Install System Dependencies
+These packages are required to build **pylibssh**. **Install in .venv environment.**
+```bash
+sudo apt install -y libssh-dev python3-dev build-essential
+pip install ansible-pylibssh
 ```
 
 ### Required Ansible Collections
 ```bash
-ansible-galaxy collection install \
-  cisco.ios \
-  community.network \
-  ansible.netcommon
+ansible-galaxy collection install cisco.ios
+ansible-galaxy collection install community.routeros
+```
+To verify installed collection:
+```bash
+ansible-galaxy collection list
 ```
 
 ---
@@ -146,7 +160,7 @@ ansible-galaxy collection install \
 ## 🔐 Secrets Management (Ansible Vault)
 All device credentials are stored securely using Ansible Vault.
 ```bash
-ansible-vault create inventory/group_vars/all/vault.yml
+sudo ansible-vault encrypt group_vars/all/vault.yml
 ```
 Run playbooks with:
 ```bash

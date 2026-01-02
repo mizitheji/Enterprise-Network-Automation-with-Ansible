@@ -2,9 +2,16 @@
   hosts: all
   gather_facts: no
 
+  collections:
+    - cisco.ios
+    - community.routeros
+
   tasks:
     - name: Cisco | Show running-config
       when: "'cisco' in group_names"
+      connection: network_cli
+      become: yes
+      become_method: enable
       cisco.ios.ios_command:
         commands:
           - show running-config
@@ -18,7 +25,8 @@
 
     - name: MikroTik | Full export backup
       when: "'mikrotik' in group_names"
-      community.network.routeros_command:
+      connection: network_cli
+      community.routeros.command:
         commands:
           - /export verbose
       register: mikrotik_backup

@@ -1,3 +1,10 @@
-ansible_user: netadmin #change when using different username and password
-ansible_password: SuperSecretPassword
-ansible_become_password: SuperEnableSecret
+#For Cisco
+cisco_user: ipfokus
+cisco_password: "565083"
+cisco_become_password: "565083"
+
+#For Mikrotik
+mikrotik_user: admin
+mikrotik_password: Ipfokus565083
+
+#If you password start with numbers, make sure to surround it with quotation, if not ansible will treat it like an interger

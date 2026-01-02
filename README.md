@@ -91,21 +91,20 @@ Network-Automation-With-Ansible
 │   └── mikrotik.yml
 ├── playbooks/
 | ├── roles/
-│ ├── cisco_compliance/
-| | └── tasks/
-| |  └── main.yml
-│ ├── mikrotik_compliance/
-| | └── tasks/
-| |   └── main.yml
+│ | ├── cisco_ospf/
+| | | └── tasks/
+| | |   └── main.yml
+│ | ├── cisco_compliance/
+| | | └── tasks/
+| | |   └── main.yml
+│ | └── mikrotik_compliance/
+| |   └── tasks/
+| |     └── main.yml
 │ ├── backup.yml # Config backups
 │ ├── snmp.yml # SNMP deployment
 │ ├── compliance.yml # SSH compliance check
 │ ├── ospf_check.yml # OSPF neighbor validation
 │ └── compliance_report.yml # CSV compliance report
-├── roles/
-│ └── cisco_ospf/
-|   └── tasks/
-|     └── main.yml
 ├── backups/
 │ ├── cisco/
 │ └── mikrotik/

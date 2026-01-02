@@ -1,10 +1,10 @@
 #For Cisco
-cisco_user: ipfokus
-cisco_password: "565083"
-cisco_become_password: "565083"
+cisco_user: username
+cisco_password: SuperStrongPassword
+cisco_become_password: SuperStrongPassword
 
 #For Mikrotik
-mikrotik_user: admin
-mikrotik_password: Ipfokus565083
+mikrotik_user: username
+mikrotik_password: SuperStrongPassword
 
 #If you password start with numbers, make sure to surround it with quotation, if not ansible will treat it like an interger

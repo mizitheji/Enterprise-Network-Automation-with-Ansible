@@ -114,7 +114,7 @@ Network-Automation-With-Ansible
 ├── reports/
 │ └── compliance_report.csv
 ├── diagrams/
-│ └── enterprise_ansible_hq_3branch.png
+│ └── diagrams.jpg
 └── README.md
 ```
 

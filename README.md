@@ -32,6 +32,45 @@ The Ansible Control Node is hosted on **Proxmox at HQ**, reflecting real-world d
 - **Cisco C8300**
 - Provides connectivity between all sites using **OSPF**
 
+### OSPF WAN Links
+
+| Site     | Local IP | Subnet      | Remote IP | Remote Site |
+|----------|----------|-------------|-----------|-------------|
+| HQ       | 10.0.0.1 | 10.0.0.0/30 | 10.0.0.2  | ISP         |
+| Branch 1 | 10.0.0.5 | 10.0.0.4/30 | 10.0.0.6  | ISP         |
+| Branch 2 | 10.0.0.9 | 10.0.0.8/30 | 10.0.0.10 | ISP         |
+
+### ISP To Internet
+
+| Site      | Local IP     | Subnet          | Remote IP     | Remote Site |
+|-----------|--------------|-----------------|---------------|-------------|
+| ISP       | 10.255.255.2 | 10.255.255.0/30 | 10.255.255.1  | INTERNET    |
+
+### HQ VLAN Design
+
+| VLAN ID | VLAN Name | Purpose           | Subnet          |
+|---------|-----------|-------------------|-----------------|
+| 1       | Mgmt      | Device Management | 172.20.1.0/24   |
+| 10      | Wired     | Wired Users       | 192.168.11.0/24 |
+| 20      | Wireless  | Wireless Clients  | 172.30.30.0/24  |
+| 40      | Server    | Server Network    | 192.168.40.0/24 |
+
+### Branch 1 VLAN Design
+
+| VLAN ID | VLAN Name | Purpose           | Subnet          |
+|---------|-----------|-------------------|-----------------|
+| 1       | Mgmt      | Device Management | 172.20.2.0/24   |
+| 10      | Wired     | Wired Users       | 192.168.12.0/24 |
+
+### Branch 2 VLAN Design
+
+| VLAN ID | VLAN Name | Purpose           | Subnet          |
+|---------|-----------|-------------------|-----------------|
+| 1       | Mgmt      | Device Management | 172.20.3.0/24   |
+| 10      | Wired     | Wired Users       | 192.168.13.0/24 |
+> All sites participate in OSPF area 0 via point-to-point /30 WAN links through the ISP core router.  
+> Internal VLAN subnets are advertised into OSPF for full inter-site reachability.
+
 ---
 
 ## 🧠 Architecture Concept

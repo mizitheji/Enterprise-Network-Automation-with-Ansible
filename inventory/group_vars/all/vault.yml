@@ -1,2 +1,3 @@
-ansible_user: netadmin
+ansible_user: netadmin #change when using different username and password
 ansible_password: SuperSecretPassword
+ansible_become_password: SuperEnableSecret
